@@ -25,7 +25,7 @@ class UserProfileService {
         const pdfText = await this.extractTextFromPdf(req.file.buffer);
 
         const configuration = new Configuration({
-            apiKey: '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',
+            apiKey: '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',
         });
         const openai = new OpenAIApi(configuration);
         const response = await openai.createChatCompletion({
