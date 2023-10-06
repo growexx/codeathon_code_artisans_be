@@ -5,6 +5,8 @@ const UploadMiddleWare = require('../middleware/upload');
 const userProfileController = require('../services/userProfile/userProfileController');
 
 router.post('/pdf', UploadMiddleWare.single('pdf'), userProfileController.uploadPDF);
+router.post('/text', userProfileController.simpleText);
+
 router.get('/details', AuthMiddleWare, ACLMiddleWare, userProfileController.getUserDetails);
 router.put('/picture', AuthMiddleWare, ACLMiddleWare, UploadMiddleWare.single('photo'), userProfileController.updateProfilePicture);
 router.delete('/picture', AuthMiddleWare, ACLMiddleWare, userProfileController.deleteProfilePicture);

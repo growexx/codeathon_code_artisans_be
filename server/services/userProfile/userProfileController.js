@@ -12,6 +12,11 @@ class UserProfileController {
         Utils.sendResponse(null, data, res, res.__('SUCCESS'));
     }
 
+    static async simpleText (req, res) {
+        const data = await UserProfileService.simpleText(req);
+        Utils.sendResponse(null, data, res, res.__('SUCCESS'));
+    }
+
     /**
      * @desc This function is being used to get user details
      * @author Growexx

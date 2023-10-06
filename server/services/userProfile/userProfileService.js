@@ -15,14 +15,28 @@ const { Configuration, OpenAIApi } = require("openai");
  */
 class UserProfileService {
 
-    static async extractTextFromPdf(pdfData) {
+    static getPrompt (type) {
+        switch (type) {
+            case '1':
+                return "Generate a comprehensive database schema, including tables, relationships, and data types for below data. Ensure that the schema is optimized for efficient querying and data retrieval: "
+            case '2':
+                return "Create unit test code for below data. Write test cases that cover different scenarios, including valid and invalid input, authentication failures, and edge cases: "
+            case '3':
+                return "Develop a controller code for below data in javascript. Ensure that the controller follows best practices for security and handles various error scenarios gracefully: "
+            default:
+                return "Please genarate Database schema, Unit test code & Controller code for below data: "
+        }
+    }
+
+    static async extractTextFromPdf (pdfData) {
         const dataBuffer = Buffer.from(pdfData, 'base64');
         const data = await pdf(dataBuffer);
         return data.text;
     }
 
-    static async uploadPDF(req) {
+    static async uploadPDF (req) {
         const pdfText = await this.extractTextFromPdf(req.file.buffer);
+        const prompt = this.getPrompt(req.body.type);
 
         const configuration = new Configuration({
             apiKey: process.env.OPENAI_API_KEY,
@@ -30,9 +44,23 @@ class UserProfileService {
         const openai = new OpenAIApi(configuration);
         const response = await openai.createChatCompletion({
             model: "gpt-3.5-turbo",
-            messages: [{ role: "user", content: `Please genarate Database schema, Unit test code & Controller code for below data: ${pdfText}` }],
+            messages: [{ role: "user", content: `${prompt} ${pdfText}` }],
         })
-        return {pdfText, answer: response.data.choices[0].message.content};
+        return { pdfText, answer: response.data.choices[0].message.content };
+    }
+
+    static async simpleText (req) {
+        const input = req.body.text;
+
+        const configuration = new Configuration({
+            apiKey: process.env.OPENAI_API_KEY,
+        });
+        const openai = new OpenAIApi(configuration);
+        const response = await openai.createChatCompletion({
+            model: "gpt-3.5-turbo",
+            messages: [{ role: "user", content: input }],
+        })
+        return { input, answer: response.data.choices[0].message.content };
     }
 
     /**
@@ -44,7 +72,7 @@ class UserProfileService {
      * @param {Object} res Response
      * @param {function} next exceptionHandler
      */
-    static async getUserDetails(user) {
+    static async getUserDetails (user) {
         return user;
     }
 
@@ -56,7 +84,7 @@ class UserProfileService {
      * @param {Object} req.body RequestBody
      * @param {Object} res Response
      */
-    static async updateProfilePicture(req, user) {
+    static async updateProfilePicture (req, user) {
         const fileName = `${process.env.NODE_ENV}-proflie-pictures/${user._id}`;
         const Validator = new UserBasicProfileValidator(req.file);
         await Validator.validationProfilePicture();
@@ -80,7 +108,7 @@ class UserProfileService {
      * @since 07/06/2022
      * @param {Object} res Response
      */
-    static async ftpConnection() {
+    static async ftpConnection () {
         var config = {
             host: process.env.FTP_HOST,
             port: parseInt(process.env.FTP_PORT),
@@ -116,7 +144,7 @@ class UserProfileService {
      * @since 07/06/2022
      * @param {Object} req Request
      */
-    static async ftpFileUpload(req) {
+    static async ftpFileUpload (req) {
         let clientConn = await UserProfileService.ftpConnection();
         const ftpUploadPromise = new Promise((resolve, reject) => {
             clientConn.put(req.body.localFilePath, req.body.remoteFilePath, function (err) {
@@ -133,7 +161,7 @@ class UserProfileService {
      * @since 07/06/2022
      * @param {Object} req Request
      */
-    static async ftpFileDownload(req) {
+    static async ftpFileDownload (req) {
         let clientConn = await UserProfileService.ftpConnection();
         const ftpDownloadPromise = new Promise((resolve, reject) => {
             clientConn.get(req.body.remoteFilePath, function (err, stream) {
@@ -157,7 +185,7 @@ class UserProfileService {
      * @param {Object} req.body RequestBody
      * @param {Object} res Response
      */
-    static async deleteProfilePicture(user) {
+    static async deleteProfilePicture (user) {
         const fileName = `${process.env.NODE_ENV}-proflie-pictures/${user._id}`;
         await UploadService.deleteObject(fileName);
         await User.updateOne({
@@ -177,7 +205,7 @@ class UserProfileService {
      * @param {Object} req.body RequestBody
      * @param {Object} res Response
      */
-    static async changePassword(data, user, locale) {
+    static async changePassword (data, user, locale) {
         const Validator = new UserBasicProfileValidator(null, locale);
         Validator.password(data.oldPassword);
         Validator.password(data.newPassword);
