@@ -1,67 +1,26 @@
-***Growexx Attendance
-# Node boilerplate
-This is a nodejs boilerplate with basic user authentication and uses AWS SES for sending emails. This boilerplate has following features:
-- User signup along with sending verification otp
-- User signin
-- Forgot password
-- Update user profile
+# CodeArtisans BE
 
----
-## Requirements
+- This is a backend code repository for CodeArtisans.
+- To get started with our web application, please follow this instructions:
 
-For development, you will only need Node.js and a node global package installed in your environement.
-
-### Node
-- #### Node installation on Windows
-
-  Just go on [official Node.js website](https://nodejs.org/) and download the installer.
-Also, be sure to have `git` available in your PATH, `npm` might need it (You can find git [here](https://git-scm.com/)).
-
-- #### Node installation on Ubuntu
-
-  You can install nodejs and npm easily with apt install, just run the following commands.
-
-      $ sudo apt install nodejs
-      $ sudo apt install npm
-
-- #### Other Operating Systems
-  You can find more information about the installation on the [official Node.js website](https://nodejs.org/) and the [official NPM website](https://npmjs.org/).
-
-If the installation was successful, you should be able to run the following command.
-
-    $ node --version
-    v13.8.0
-
-    $ npm --version
-    6.13.6
-
-If you need to update `npm`, you can make it using `npm`! Cool right? After running the following command, just open again the command line and be happy.
-
-    $ npm install npm -g
-
-## Install
-
-    $ git clone https://github.com/YOUR_USERNAME/PROJECT_TITLE
-    $ cd PROJECT_TITLE
-    $ npm install
+- Make sure you have node version `16.4.0` or higher installed on your system.
+- Also make sure to install mongoDB on your machine before starting this application.
 
 ## Configure app
 
-You will need to configure AWS SES for sending emails.
+Create an environment file with extension `.env`.
 
-Create an environment file with extension ```.env```.
-
-- cp ```testing.env``` as ```YOUR_ENV.env```
+- cp `testing.env` as `local.env`
 - Change DB_NAME
 - Change DB_HOST
-- If you have DB Username add ```DB_USERNAME={VALUE}``` and ```DB_PASSWORD={VALUE}``` to your env file
+- If you have DB Username add `DB_USERNAME={VALUE}` and `DB_PASSWORD={VALUE}` to your env file
 - Similarly change other fields as per your need.
 
-## Running the project
+## Steps
 
-- To execute the code, run the following command ```npm start```
-- Run the command ```npm t``` for testing
-
-## AWS SES 
-
-- You can perform the CRUD operations on AWS SES template.
+1. Download the zip file or clone in the in the folder of your choice by running this command in the terminal - `git clone git@github.com:growexx/codeathon_code_artisans_be.git`
+2. Then change the path to the project directory and inside that folder, run `npm install` command to install all the required packages.
+3. After successfull installation you can see `node_modules` folder inside your project repository.
+4. Now to start the application run `npm start` command and boom your application is being compiled and started running on port 3002.
+5. To setup frontend you can follow the readme on this [repository](https://github.com/growexx/codeathon_code_artisans_fe).
+6. After both backend and frontend applications are running, you can use our web application to generate database schema, unit test code, and controller code by providing user stories via pdf file or via chat input.
