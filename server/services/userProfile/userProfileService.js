@@ -20,7 +20,7 @@ class UserProfileService {
             case '1':
                 return "Generate a comprehensive database schema, including tables, relationships, and data types for below data. Ensure that the schema is optimized for efficient querying and data retrieval: "
             case '2':
-                return "Create unit test code for below data. Write test cases that cover different scenarios, including valid and invalid input, authentication failures, and edge cases: "
+                return "Create unit test code for below data in javascript. Write test cases that cover different scenarios, including valid and invalid input, authentication failures, and edge cases: "
             case '3':
                 return "Develop a controller code for below data in javascript. Ensure that the controller follows best practices for security and handles various error scenarios gracefully: "
             default:
